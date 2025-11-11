@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Office Holiday Theme Voting</title>
+  <title>G3X Office Holiday Decoration Theme Voting</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -71,7 +71,7 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
-  <h1>Vote for Your Favorite Holiday Theme</h1>
+  <h1>Vote for Your Favorite Holiday Decoration Theme</h1>
   <div id="poll"></div>
   <div id="chart"></div>
   <div id="deadline">Voting closes at 11:59 PM EST on November 26, 2025</div>
@@ -170,18 +170,16 @@
       }
     ];
 
-    const poll = document.getElementById("poll");
+     const poll = document.getElementById("poll");
 
     themes.forEach((theme, index) => {
       const div = document.createElement("div");
       div.className = "theme";
 
       const tooltip = document.createElement("span");
-      tooltip.className
-
-      const tooltip = document.createElement("span");
       tooltip.className = "tooltip";
       tooltip.textContent = theme.title;
+      tooltip.style.color = categoryColors[theme.category];
 
       const tooltipText = document.createElement("span");
       tooltipText.className = "tooltiptext";
@@ -191,13 +189,42 @@
 
       const voteBtn = document.createElement("button");
       voteBtn.textContent = "Vote";
-      voteBtn.onclick = () => alert(`Vote recorded for: ${theme.title}`);
+      voteBtn.disabled = now > deadline;
+      voteBtn.onclick = () => {
+        fetch(endpoint, {
+          method: "POST",
+          body: new URLSearchParams({ idea: index })
+        }).then(() => {
+          alert(`Vote recorded for: ${theme.title}`);
+          showChart();
+        });
+      };
 
       div.appendChild(tooltip);
       div.appendChild(voteBtn);
       poll.appendChild(div);
     });
+
+    function showChart() {
+      fetch(endpoint)
+        .then(res => res.json())
+        .then(data => {
+          google.charts.load('current', { packages: ['corechart'] });
+          google.charts.setOnLoadCallback(() => {
+            const chartData = [['Theme', 'Votes']];
+            data.ideas.forEach((idea, i) => {
+              chartData.push([idea, data.votes[i]]);
+            });
+
+            const chart = new google.visualization.BarChart(document.getElementById('chart'));
+            chart.draw(google.visualization.arrayToDataTable(chartData), {
+              title: 'Current Vote Tally',
+              legend: { position: 'none' },
+              colors: ['#DC143C']
+            });
+          });
+        });
+    }
   </script>
 </body>
 </html>
-
