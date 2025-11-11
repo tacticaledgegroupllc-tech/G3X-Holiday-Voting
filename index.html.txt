@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Office Holiday Theme Voting</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #2E4B2B;
+      color: #fff;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .theme {
+      margin-bottom: 20px;
+    }
+    .theme button {
+      margin-left: 10px;
+      background-color: #DC143C;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .theme button:hover {
+      background-color: #a10f2f;
+    }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      font-weight: bold;
+      border-bottom: 1px dotted #ccc;
+    }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 350px;
+      background-color: #f9f9f9;
+      color: #333;
+      text-align: left;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      position: absolute;
+      z-index: 1;
+      top: 25px;
+      left: 0;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+    }
+    #chart {
+      margin-top: 40px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      color: #000;
+    }
+    #deadline {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #ccc;
+    }
+  </style>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+  <h1>Vote for Your Favorite Holiday Theme</h1>
+  <div id="poll"></div>
+  <div id="chart"></div>
+  <div id="deadline">Voting closes at 11:59 PM EST on November 26, 2025</div>
+
+  <script>
+    const endpoint = "https://script.google.com/macros/s/AKfycbwLC9PyCfo9GMLccgYMaoMvXNyAor6hWTykJy1_kp1qqwyiQX81w6eL6Z9851P9gEKYnA/exec";
+    const deadline = new Date("2025-11-26T23:59:59-05:00");
+    const now = new Date();
+
+    const categoryColors = {
+      military: "#6B8E23",
+      comedy: "#DC143C",
+      classic: "#4169E1"
+    };
+
+    const themes = [
+      {
+        title: "Mall Santa Mayhem",
+        category: "comedy",
+        details: `Concept: A chaotic, over-the-top homage to the classic American mall Christmas experience.
+• Decor Ideas: Inflatable Santas, fake snow piles, long lines of cardboard cutout shoppers, toy store displays, and a “photo with Santa” booth.
+• Humor Angle: “Karen” complaint stations, lost kids’ signs, and exaggerated sale banners like “90% off if you survive the line.”
+• Why It Works: Nostalgic, relatable, and ripe for satire.`
+      },
+      {
+        title: "Operation Silent Night",
+        category: "military",
+        details: `Concept: A tactical Christmas mission where elves are special ops and the North Pole is a forward operating base.
+• Decor Ideas: Camouflage wrapping paper, toy supply crates, elf paratroopers, candy cane IED detectors, and mission briefings on whiteboards.
+• Humor Angle: “Classified” gift lists, encrypted letters to Santa, and a “reindeer drone surveillance” station.
+• Why It Works: Honors military culture while keeping it lighthearted and creative.`
+      },
+      {
+        title: "Assassin's Winter Ball",
+        category: "military",
+        details: `Concept: A sleek, high-stakes holiday gala where every guest is a secret agent.
+• Decor Ideas: Black-tie mannequins with weapons hidden in gifts, dossiers on naughty/nice targets, red laser tripwires across hallways, and “safe house” zones.
+• Humor Angle: “Target: Santa” mission boards, elf bodyguards, and snowball grenades.
+• Why It Works: Stylish, cinematic, and perfect for dramatic lighting and spy-themed props.`
+      },
+      {
+        title: "Shutdown & Sleigh Bells: A Budget Xmas",
+        category: "comedy",
+        details: `Concept: What happens when Santa’s workshop gets hit by a government shutdown? Elves furloughed, reindeer grounded, and DIY everything.
+• Decor Ideas: Paper chain garlands, cardboard fireplaces, “Out of Order” signs on sleighs, rationed hot cocoa stations, and handwritten “Wish List Denied” forms.
+• Humor Angle: “Due to budget cuts, Santa will only be visiting every third child,” and “Elf union on strike.”
+• Why It Works: Satirical, timely, and perfect for low-cost, high-creativity execution.`
+      },
+      {
+        title: "Nuclear Noel: Fallout at the North Pole",
+        category: "comedy",
+        details: `Concept: A post-apocalyptic Christmas where the North Pole has gone full Fallout—irradiated tinsel, mutated snowmen, and bunker-style cheer.
+• Decor Ideas: Rusted ornaments, gas masks on elves, glowing green “radioactive” snow, and vault-style doors on cubicles.
+• Humor Angle: “Santa’s sleigh runs on fusion now,” “Naughty list vaporized in EMP blast.”
+• Why It Works: Darkly funny, visually striking, and a great excuse to repurpose Halloween props.`
+      },
+      {
+        title: "Sandy Claws: Beach Vacation Xmas",
+        category: "classic",
+        details: `Concept: Santa’s on PTO and the elves are sipping piña coladas—Christmas goes tropical.
+• Decor Ideas: Palm trees with lights, surfboards wrapped in tinsel, sandcastle snowmen, and flamingo reindeer.
+• Humor Angle: “Santa’s sleigh got stuck in the sand,” “Elf sunscreen application station.”
+• Why It Works: Bright, colorful, and a welcome escape from traditional winter themes.`
+      },
+      {
+        title: "Covert Claus: North Pole Black Ops",
+        category: "military",
+        details: `Concept: The North Pole is a classified military installation, and Santa is running a covert gift-drop operation.
+• Decor Ideas: Tactical elf uniforms, encrypted “Nice List” dossiers, candy cane comms gear, and sleigh drone schematics.
+• Humor Angle: “Operation: Chimney Drop,” “Frosty is a double agent.”
+• Why It Works: Combines military precision with holiday whimsy—great for structured layouts and mission briefings.`
+      },
+      {
+        title: "Nightmare Before Xmas: Holiday Collision",
+        category: "classic",
+        details: `Concept: Halloween and Christmas collide in a Tim Burton-inspired mashup of spooky and festive.
+• Decor Ideas: Jack-o’-lantern snowmen, skeletal reindeer, black-and-white candy canes, and twisted wreaths.
+• Humor Angle: “Santa’s been kidnapped by Halloween Town,” “Elf-on-the-Shelf now reports to Oogie Boogie.”
+• Why It Works: Visually iconic, beloved by many, and perfect for dramatic lighting and contrast.`
+      },
+      {
+        title: "Hallmark Holiday: Small Town, Big Feelings",
+        category: "classic",
+        details: `Concept: A picture-perfect small-town Christmas where everyone’s falling in love, rediscovering the magic, or saving the bakery.
+• Decor Ideas: Faux snow everywhere, cozy fireplaces, flannel patterns, mistletoe overload, and “Main Street” storefronts.
+• Humor Angle: “Big city exec returns home to find love and cocoa,” “Every cubicle is a subplot.”
+• Why It Works: Universally recognizable, easy to parody, and great for cozy, feel-good vibes.`
+      },
+      {
+        title: "Prep & Landing: Elf Recon Ops",
+        category: "classic",
+        details: `Concept: Inspired by the Disney short, this theme turns the office into a high-tech elf recon mission prepping homes for Santa’s arrival.
+• Decor Ideas: Elf command centers, laser grid simulations, candy cane grappling hooks, and mission control dashboards.
+• Humor Angle: “Lanny and Wayne are watching,” “Sleigh ETA: T-minus 6 hours.”
+• Why It Works: Action-packed, family-friendly, and full of gadgetry and elf hijinks.`
+      }
+    ];
+
+    const poll = document.getElementById("poll");
+
+    themes.forEach((theme, index) => {
+      const div = document.createElement("div");
+      div.className = "theme";
+
+      const tooltip = document.createElement("span");
+      tooltip.className
+
+      const tooltip = document.createElement("span");
+      tooltip.className = "tooltip";
+      tooltip.textContent = theme.title;
+
+      const tooltipText = document.createElement("span");
+      tooltipText.className = "tooltiptext";
+      tooltipText.textContent = theme.details;
+
+      tooltip.appendChild(tooltipText);
+
+      const voteBtn = document.createElement("button");
+      voteBtn.textContent = "Vote";
+      voteBtn.onclick = () => alert(`Vote recorded for: ${theme.title}`);
+
+      div.appendChild(tooltip);
+      div.appendChild(voteBtn);
+      poll.appendChild(div);
+    });
+  </script>
+</body>
+</html>
+
