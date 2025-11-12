@@ -24,7 +24,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      text-align: left;
     }
     .theme button {
       background-color: #DC143C;
@@ -220,12 +219,26 @@
       voteBtn.textContent = "Vote";
       voteBtn.disabled = now > deadline;
       voteBtn.onclick = () => {
+        // Immediate feedback
+        voteBtn.textContent = "Submitting...";
+        voteBtn.disabled = true;
+
+        // Hide other themes
+        poll.querySelectorAll(".theme").forEach((el, i) => {
+          if (i !== index) {
+            el.style.display = "none";
+          }
+        });
+
+        // Show chart immediately
+        showChart();
+
+        // Submit vote
         fetch(endpoint, {
           method: "POST",
           body: new URLSearchParams({ idea: index })
         }).then(() => {
           alert(`Vote recorded for: ${theme.title}`);
-          showChart();
         });
       };
 
