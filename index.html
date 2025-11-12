@@ -254,7 +254,14 @@
               legend: { position: 'none' },
               colors: ['#DC143C'],
               hAxis: {
-                format: '0'  // ✅ Forces whole number display
+                format: '0'
+              },
+              vAxis: {
+                textStyle: {
+                  fontSize: 12,
+                  maxLines: 3
+                },
+                slantedText: false
               }
             });
           });
