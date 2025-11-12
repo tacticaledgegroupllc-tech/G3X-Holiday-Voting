@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>G3X Office Holiday Decoration Theme</title>
-  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -252,7 +252,10 @@
             chart.draw(google.visualization.arrayToDataTable(chartData), {
               title: 'Current Vote Tally',
               legend: { position: 'none' },
-              colors: ['#DC143C']
+              colors: ['#DC143C'],
+              hAxis: {
+                format: '0'  // ✅ Forces whole number display
+              }
             });
           });
         });
