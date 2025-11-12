@@ -243,9 +243,9 @@
           google.charts.load('current', { packages: ['corechart'] });
           google.charts.setOnLoadCallback(() => {
             const chartData = [['Theme', 'Votes']];
-            data.ideas.forEach((idea, i) => {
+            data.ideas.forEach((_, i) => {
               const roundedVotes = Math.round(data.votes[i]);
-              chartData.push([idea, roundedVotes]);
+              chartData.push([themes[i].title, roundedVotes]);
             });
 
             const chart = new google.visualization.BarChart(document.getElementById('chart'));
