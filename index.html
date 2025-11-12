@@ -79,7 +79,6 @@
       color: #ccc;
     }
 
-    /* ✅ Mobile Optimization */
     @media screen and (max-width: 600px) {
       body {
         padding: 10px;
@@ -213,21 +212,17 @@
       voteBtn.textContent = "Vote";
       voteBtn.disabled = now > deadline;
       voteBtn.onclick = () => {
-        // Immediate feedback
         voteBtn.textContent = "Submitting...";
         voteBtn.disabled = true;
 
-        // Hide other themes
         poll.querySelectorAll(".theme").forEach((el, i) => {
           if (i !== index) {
             el.style.display = "none";
           }
         });
 
-        // Show chart immediately
         showChart();
 
-        // Submit vote
         fetch(endpoint, {
           method: "POST",
           body: new URLSearchParams({ idea: index })
@@ -249,7 +244,8 @@
           google.charts.setOnLoadCallback(() => {
             const chartData = [['Theme', 'Votes']];
             data.ideas.forEach((idea, i) => {
-              chartData.push([idea, data.votes[i]]);
+              const roundedVotes = Math.round(data.votes[i]);
+              chartData.push([idea, roundedVotes]);
             });
 
             const chart = new google.visualization.BarChart(document.getElementById('chart'));
