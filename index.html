@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
 <head>
   <title>G3X Office Holiday Decoration Theme</title>
   <link rel="icon" href="favicon.png" type="image/png">
@@ -22,9 +24,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #3a5f38;
-      padding: 10px 15px;
-      border-radius: 6px;
+      text-align: left;
     }
     .theme button {
       background-color: #DC143C;
@@ -87,20 +87,21 @@
       .theme {
         flex-direction: column;
         align-items: flex-start;
-        padding: 12px;
       }
       .theme button {
         margin-top: 8px;
         width: 100%;
-        font-size: 16px;
+        font-size: 18px;
+        padding: 10px 16px;
       }
       .tooltip {
-        font-size: 18px;
+        font-size: 20px;
         line-height: 1.4;
       }
       h1 {
-        font-size: 22px;
+        font-size: 24px;
         margin-bottom: 20px;
+      }
     }
   </style>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -208,7 +209,7 @@
       const tooltip = document.createElement("span");
       tooltip.className = "tooltip";
       tooltip.textContent = theme.title;
- 
+
       const tooltipText = document.createElement("span");
       tooltipText.className = "tooltiptext";
       tooltipText.textContent = theme.details;
@@ -246,7 +247,7 @@
 
             const chart = new google.visualization.BarChart(document.getElementById('chart'));
             chart.draw(google.visualization.arrayToDataTable(chartData), {
-              title: 'G3X Current Vote Tally',
+              title: 'Current Vote Tally',
               legend: { position: 'none' },
               colors: ['#DC143C']
             });
