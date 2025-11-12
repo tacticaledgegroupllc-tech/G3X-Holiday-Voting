@@ -8,6 +8,7 @@
       background-color: #2E4B2B;
       color: #fff;
       padding: 20px;
+      box-sizing: border-box;
     }
     h1 {
       text-align: center;
@@ -19,9 +20,13 @@
     }
     .theme {
       margin-bottom: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .theme button {
-      margin-left: 10px;
+      margin-left: 8px;
       background-color: #DC143C;
       color: white;
       border: none;
@@ -219,7 +224,7 @@
 
             const chart = new google.visualization.BarChart(document.getElementById('chart'));
             chart.draw(google.visualization.arrayToDataTable(chartData), {
-              title: 'Current Vote Tally',
+              title: 'G3X Current Vote Tally',
               legend: { position: 'none' },
               colors: ['#DC143C']
             });
