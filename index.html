@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-<html>
 <head>
-  <title>G3X Office Holiday Decoration Theme Voting</title>
+  <title>G3X Office Holiday Decoration Theme</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <style>
     body {
@@ -29,7 +27,6 @@
       border-radius: 6px;
     }
     .theme button {
-      margin-left: 8px;
       background-color: #DC143C;
       color: white;
       border: none;
@@ -80,6 +77,30 @@
       margin-top: 20px;
       font-size: 16px;
       color: #ccc;
+    }
+
+    /* ✅ Mobile Optimization */
+    @media screen and (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      .theme {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px;
+      }
+      .theme button {
+        margin-top: 8px;
+        width: 100%;
+        font-size: 16px;
+      }
+      .tooltip {
+        font-size: 18px;
+        line-height: 1.4;
+      }
+      h1 {
+        font-size: 22px;
+        margin-bottom: 20px;
     }
   </style>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
